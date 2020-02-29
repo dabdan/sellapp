@@ -21,18 +21,12 @@
                         <p><span>￥{{child.price}}</span><span>￥28</span></p>
                       </div>
                   </div>
-                
-              
             </div>
           </ul>  
-    
-      
-
       </div>
      
   </div>
 </template>
-
 <script>
 import {getRating} from '../api/api'
 import BScroll from 'better-scroll'
