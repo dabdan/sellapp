@@ -17,7 +17,7 @@ export function getgoods() {
 }
 
 
-//请求评论信息
+//请求商品信息
 export function getRating() {
     return req.get('/api/goods')
 }

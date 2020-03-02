@@ -1,6 +1,7 @@
 <template>
   <div id="main">
-          <div class="header" :style="{background:'url('+data.avatar+')'}">
+        <div class="header" :style="{background:'url('+data.avatar+')',backgroundSize:'cover',}">
+          <div class="background"></div>
             <div class="head">
                   <div class="left">
                         <img :src="data.avatar" alt="">
@@ -19,33 +20,54 @@
                           <span>在线支付满28减5，满50减10</span>
                         </p>
                   </div>
-          </div>
-          <div class="button">
-              <img src="../assets/imgs/bulletin@2x.png" alt="">
-              <span>粥品香坊其烹饪粥料的秘方源于中国千年古法，再融合现代制作工艺</span>
-          </div>
-      </div>
+            </div>
+            <div class="button">
+                <img src="../assets/imgs/bulletin@2x.png" alt="">
+                <span>粥品香坊其烹饪粥料的秘方源于中国千年古法，再融合现代制作工艺</span>
+            </div>
+        </div>
+      <!-- 切换 -->
       <div class="nav">
-        <router-link to="/Main/Goods">商品</router-link>
-        <router-link to="/Main/Comment">评论</router-link>
-        <router-link to="/Main/Shops">商家</router-link>
+          <router-link @click.native="changeOn('0')" :class="{'on':ison==0}" to="/Main/Goods">商品</router-link>
+          <router-link @click.native="changeOn('1')" :class="{'on':ison==1}" to="/Main/Comment">评论</router-link>
+          <router-link @click.native="changeOn('2')" :class="{'on':ison==2}" to="/Main/Shops">商家</router-link>
       </div>
       <router-view></router-view>
-      <div class="shopCar">
-        <div class="left">
-          <div class="car">
-            <img src="../assets/imgs/car.png" alt="">
-          </div>
-          <span>￥0</span>
+          <!-- 购物车的底栏 -->
+          <div class="shopCar">
+            <div class="left">
+              <div @click="show = !show" class="car">
+                <img src="../assets/imgs/car.png" alt="">
+              </div>
+              <span>￥10</span>
+            </div>
+            <div class="center">
+              另需配送费4元
+            </div>
+            <div class="right">
+              ￥20起送
+            </div>
+              <!-- 购物车 -->
+            <transition name="slide-fade">
+                <div v-if="show" class="carBar">
+                    <div class="top">
+                      <p>购物车</p>
+                      <p>清空</p>
+                    </div>
+                    <div class="food">
+                        <p>皮蛋瘦肉粥</p>
+                        <p class="rightBtn">
+                                <button class="sub" @click="changeNum(-1)">-</button>
+                                <span>1</span>
+                                <button class="add" @click="changeNum(1)">+</button>
+                        </p>
+                      
+                    </div>
+                </div>
+            </transition>
         </div>
-        <div class="center">
-          另需配送费4元
-        </div>
-        <div class="right">
-          ￥20起送
-        </div>
-        
-      </div>
+    
+      
   </div>
 </template>
 
@@ -54,25 +76,40 @@ import { getgoods } from '../api/api'
   export default {
     data(){
       return{
+        show:true,
+        ison:'',
         data:{}
       }
     },
-    created(){
+    mounted(){
       getgoods().then((res)=>{
         // console.log(res)
        this.data=res.data.data
       })
+    },
+    methods:{
+      changeOn(h){
+       this.ison=h
+      }
     }
   }
 </script>
 
 <style lang="less">
   #main{
+    .on{
+      color: red;
+
+    }
+    .background{
+      height: 150px;
+      position: absolute;
+    }
     .header{
+      height: 150px;
       padding: 20px;
-       background: darkgoldenrod;
+      position: relative;
        .button{
-        
          font-size: 12px;
          overflow: hidden;
          text-overflow: ellipsis;
@@ -149,7 +186,7 @@ import { getgoods } from '../api/api'
            background: #2b343b;
           border: 1px solid #000;
           .car{
-             
+              z-index: 10;
               width: 50px;
               height: 50px;
               border-radius:25px; 
@@ -185,6 +222,72 @@ import { getgoods } from '../api/api'
            text-align: center;
            font-size: 16px;
         }
+         .carBar{
+          height: 100px;
+          background: #ffffff;
+          width: 100%;
+          position: fixed;
+          bottom: 50px;
+          z-index: 5;
+        }
+    }
+   
+   /* 可以设置不同的进入和离开动画 */
+    /* 设置持续时间和动画函数 */
+    .slide-fade-enter-active {
+      transition: all .5s ease;
+    }
+    .slide-fade-leave-active {
+      transition: all .5s cubic-bezier(1.0, 0.5, 0.8, 1.0);
+    }
+    .slide-fade-enter, .slide-fade-leave-to
+    /* .slide-fade-leave-active for below version 2.1.8 */ {
+      transform: translateY(300px);
+      opacity: 0;
     }
   }
+  .top{
+    padding: 10px 20px 10px 20px;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #cccc;
+  }
+  .food{
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+    p:first-child{
+      color: #000;
+      font-weight: bold;
+    }
+    .rightBtn{
+            .sub{
+              border: 2px solid #009fd8;
+              width: 16px;
+              height: 16px;
+              border-radius: 8px;
+              text-align: center;
+              line-height: 14px;
+              font-size: 20px;
+              margin-right: 10px;
+
+            }
+            .add{
+              border: 0;
+              width: 16px;
+              height: 16px;
+              border-radius: 8px;
+              text-align: center;
+              line-height: 16px;
+              font-size: 20px;
+              background: #009fd8;
+              color: #ffff;
+              margin-left: 10px;
+            }
+            span{
+              line-height: 16px;
+            }
+          }
+  }
+   
 </style>

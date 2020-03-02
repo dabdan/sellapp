@@ -70,7 +70,7 @@ import {ratings} from '../api/api'
         },
         mounted(){
             ratings().then((res)=>{
-                // console.log(res.data.data)
+                console.log(res.data.data)
                 this.data=res.data.data
             })
         }
@@ -111,7 +111,7 @@ import {ratings} from '../api/api'
                 display: flex;
                 .ivu-rate-star-full{
                     margin-left: 10px;
-                    width: 10px;
+                    width: 4px;
                     vertical-align: center;
                 }
                 .ivu-rate-text{
