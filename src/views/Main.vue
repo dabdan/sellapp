@@ -39,7 +39,7 @@
               <div @click="show = !show" class="car">
                 <img src="../assets/imgs/car.png" alt="">
               </div>
-              <span>￥10</span>
+              <span>￥{{count}}</span>
             </div>
             <div class="center">
               另需配送费4元
@@ -50,19 +50,7 @@
               <!-- 购物车 -->
             <transition name="slide-fade">
                 <div v-if="show" class="carBar">
-                    <div class="top">
-                      <p>购物车</p>
-                      <p>清空</p>
-                    </div>
-                    <div class="food">
-                        <p>皮蛋瘦肉粥</p>
-                        <p class="rightBtn">
-                                <button class="sub" @click="changeNum(-1)">-</button>
-                                <span>1</span>
-                                <button class="add" @click="changeNum(1)">+</button>
-                        </p>
-                      
-                    </div>
+                  <shopCar></shopCar>
                 </div>
             </transition>
         </div>
@@ -72,6 +60,7 @@
 </template>
 
 <script>
+import shopCar from './ShopCar'
 import { getgoods } from '../api/api'
   export default {
     data(){
@@ -91,6 +80,18 @@ import { getgoods } from '../api/api'
       changeOn(h){
        this.ison=h
       }
+    },
+    computed:{
+      count(){
+       let result=0
+       for (const item of  this.$store.getters.shopCar) {
+          result+=item.num*item.price
+       }  
+       return result
+      }
+    },
+    components:{
+      shopCar
     }
   }
 </script>
@@ -223,7 +224,6 @@ import { getgoods } from '../api/api'
            font-size: 16px;
         }
          .carBar{
-          height: 100px;
           background: #ffffff;
           width: 100%;
           position: fixed;
@@ -260,34 +260,7 @@ import { getgoods } from '../api/api'
       color: #000;
       font-weight: bold;
     }
-    .rightBtn{
-            .sub{
-              border: 2px solid #009fd8;
-              width: 16px;
-              height: 16px;
-              border-radius: 8px;
-              text-align: center;
-              line-height: 14px;
-              font-size: 20px;
-              margin-right: 10px;
-
-            }
-            .add{
-              border: 0;
-              width: 16px;
-              height: 16px;
-              border-radius: 8px;
-              text-align: center;
-              line-height: 16px;
-              font-size: 20px;
-              background: #009fd8;
-              color: #ffff;
-              margin-left: 10px;
-            }
-            span{
-              line-height: 16px;
-            }
-          }
+   
   }
    
 </style>

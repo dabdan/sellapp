@@ -24,9 +24,9 @@
                                 <span>￥28</span>
                               </p>
                               <p class="right">
-                                <button class="sub" v-show="num<=0? '':'true'" @click="changeNum(-1,index,i)">-</button>
-                                <span>{{num}}</span>
-                                <button class="add" @click="changeNum(1,index,i)">+</button>
+                                <button class="sub" v-show="child.num<=0? '':'true'" @click="changeNum(-1,child.name)">-</button>
+                                <span v-show="child.num<=0? '':'true'">{{child.num}}</span>
+                                <button class="add" @click="changeNum(1,child.name)">+</button>
                           </p>
                         </div>
                       </div>
@@ -45,7 +45,7 @@ import BScroll from 'better-scroll'
         return{
           // list:[],
           sign:'',
-          num:1,
+
         }
       },
       created(){
@@ -77,10 +77,22 @@ import BScroll from 'better-scroll'
          this.sign=tittle
          this.right.scrollToElement(document.getElementById(tittle),600)
        },
-       changeNum(n,index,i){
-
-         console.log(n,index,i)
-        this.num+=n
+      //  点击传参并加1减1
+       changeNum(val,name){
+        //  let id=0
+        //  for (let j = 0; j < goodslist.length; j++) {
+        //   // console.log(this.$store.state.goodslist[j].foods)
+        //   for (let i = 0; i < this.$store.state.goodslist[j].foods.length; i++) {
+        //     console.log(this.$store.state.goodslist[j].foods[i].name[i])
+            
+        //   }
+        //    console.log(id)
+        //  }
+        //  console.log(n,index,i)
+        this.$store.commit('changNum',{
+          name,val
+        })
+        // console.log(name,val)
         //  var num=this.goodslist[index].foods[i]+=n
         //  console.log(num)
         
@@ -104,7 +116,7 @@ import BScroll from 'better-scroll'
         },
         goodslist(){
           return this.$store.state.goodslist
-        }
+        },
         
     }
 
